@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Marylin Thomi Fotografie</title>
+  <style>
+    /* --- RESET --- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body, html {
+      font-family: 'Arial', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    /* --- NAVIGATION --- */
+    nav {
+      position: absolute;
+      top: 30px; left: 0; right: 0;
+      text-align: center;
+      z-index: 100;
+    }
+    nav a {
+      text-decoration: none;
+      margin: 0 15px;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 8px 14px;
+      border: 1px solid #fff;
+      border-radius: 3px;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    nav a:hover {
+      background-color: #999;
+      color: #fff;
+    }
+
+    /* --- HERO SECTION --- */
+    .hero {
+      background: url(Image/background.JPG) center/cover no-repeat;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 100px;
+      color: white;
+      text-shadow: 0 2px 4px rgba(7, 7, 7, 0.6);
+    }
+    .hero h1 { font-size: 4rem; font-weight: 300; }
+    .hero p { font-size: 1.5rem; margin-top: 10px; letter-spacing: 1px; }
+
+    /* --- ÜBER MICH --- */
+    #ueber-mich {
+      background-color: #f9f9f9;
+      padding: 60px 30px;
+      border-radius: 12px;
+      max-width: 1200px;
+      margin: 80px auto;
+      font-family: 'Helvetica Neue', sans-serif;
+      color: #333;
+      line-height: 1.8;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .ueber-mich-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      align-items: flex-start;
+    }
+    .ueber-mich-image { flex: 1; min-width: 280px; }
+    .ueber-mich-image img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+    .ueber-mich-text { flex: 2; min-width: 300px; }
+    .ueber-mich-text h2 {
+      font-size: 2.2em;
+      margin-bottom: 25px;
+      color: #222;
+    }
+    .ueber-mich-text p { font-size: 1.1em; margin-bottom: 20px; }
+
+    /* --- PORTFOLIO --- */
+    .portfolio {
+      padding: 80px 10%;
+      background-color: #fff;
+      text-align: center;
+    }
+    .portfolio h2 { font-size: 2.5rem; margin-bottom: 60px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-auto-rows: 150px;
+      gap: 0;
+    }
+    .grid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .grid img:hover { transform: scale(1.03); position: relative; z-index: 10; }
+    .grid img.large { grid-row: span 3; }
+    .grid img.medium { grid-row: span 2; }
+    .grid img.small { grid-row: span 1; }
+
+    /* --- KONTAKT --- */
+    .kontakt-section {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 60px 10%;
+      background-color: #f7f7f7;
+      align-items: center;
+      gap: 40px;
+    }
+    .kontakt-info { flex: 1; min-width: 300px; }
+    .kontakt-info h2 { font-size: 2.5rem; margin-bottom: 20px; }
+    .kontakt-box {
+      background-color: white;
+      padding: 20px 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .kontakt-box strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 1.1rem;
+      color: #333;
+    }
+    .kontakt-image { flex: 1; min-width: 300px; text-align: center; }
+    .kontakt-image img {
+      width: 100%;
+      max-width: 450px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* --- LIGHTBOX --- */
+    .lightbox {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 5px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      animation: zoomIn 0.3s ease;
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* --- BOOKING POPUP --- */
+    .popup-overlay {
+      position: fixed; top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .popup-content {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      text-align: center;
+      position: relative;
+    }
+    .popup-content h2 { margin-bottom: 25px; }
+    .booking-option {
+      margin-bottom: 25px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 20px;
+    }
+    .booking-option:last-child { border-bottom: none; }
+    .booking-btn {
+      margin-top: 10px;
+      background-color: #2d3b3c;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .booking-btn:hover { background-color: #455353; }
+    .close-btn {
+      position: absolute;
+      top: 10px; right: 14px;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #555;
+      font-weight: bold;
+      line-height: 1;
+    }
+    .close-btn:hover { color: #000; }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <a href="#">START</a>
+    <a href="#ueber-mich">ÜBER MICH</a>
+    <a href="#portfolio">PORTFOLIO</a>
+    <a href="#kontakt">KONTAKT</a>
+    <a href="#" id="openBooking">ONLINE BUCHEN</a>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Marylin Thomi</h1>
+    <p>Fotofachfrau EFZ</p>
+  </section>
+
+  <!-- Über mich -->
+  <section id="ueber-mich">
+    <div class="ueber-mich-container">
+      <div class="ueber-mich-image">
+        <img src="Image/DSCF0251_a-komprimiert.jpg" alt="Marylin Thomi Portrait">
+      </div>
+      <div class="ueber-mich-text">
+        <h2>Über mich</h2>
+        <p>Hey, ich bin Marylin Thomi – leidenschaftliche Fotografin mit einem Hang zur frischen Luft und zu echten Momenten.</p>
+        <p>Meine Reise in die Welt der Fotografie begann mit der Lehre als Fotofachfrau. Dort habe ich das technische Handwerk von Grund auf gelernt – vom perfekten Licht bis zur Bildbearbeitung. Doch schnell wurde mir klar: Für mich ist Fotografie viel mehr als nur Technik – es ist Gefühl, Nähe und die Kunst, Augenblicke für immer festzuhalten.</p>
+        <p>Am allerliebsten fotografiere ich Menschen in der Natur. Ob verliebte Paare beim Spaziergang im Abendlicht oder eine freie Trauung im Grünen – draussen entsteht für mich die schönste Magie.</p>
+        <p>Ich liebe es, genau diese echten, kleinen und grossen Momente mit meiner Kamera einzufangen – ungestellt, natürlich und mit ganz viel Herz.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio -->
+  <section class="portfolio" id="portfolio">
+    <h2>Portfolio</h2>
+    <div class="grid">
+      <img src="Image/Website-2.JPG" alt="Website-2" class="large" />
+      <img src="Image/Website-4.JPG" alt="Website-4" class="medium" />
+      <img src="Image/Website-7.JPG" alt="Website-7" class="medium" />
+      <img src="Image/Website-9.JPG" alt="Website-9" class="small" />
+      <img src="Image/Website-3.JPG" alt="Website-3" class="large" />
+      <img src="Image/Website68.jpg" alt="Website68" class="medium" />
+      <img src="Image/Website72.jpg" alt="Website72" class="small" />
+      <img src="Image/Website24.jpg" alt="Website24" class="medium" />
+      <img src="Image/Website69.jpg" alt="Website69" class="small" />
+      <img src="Image/Website71.jpg" alt="Website71" class="medium" />
+      <img src="Image/Website54.jpg" alt="Website54" class="large"/>
+      <img src="Image/Website52.jpg" alt="Website52" />
+      <img src="Image/Website49.jpg" alt="Website49" />
+      <img src="Image/Website36.jpg" alt="Website36" class="medium" />
+      <img src="Image/Website34.jpg" alt="Website34" class="small" />
+      <img src="Image/Website30.jpg" alt="Website30" class="medium" />
+      <img src="Image/Website28.jpg" alt="Website28" class="small" />
+    </div>
+  </section>
+
+  <!-- Kontakt -->
+  <section class="kontakt-section" id="kontakt">
+    <div class="kontakt-info">
+      <h2>Kontakt</h2>
+      <div class="kontakt-box">
+        <strong>E-Mail</strong>
+        <p><a href="mailto:thomi.marylin@gmail.com">thomi.marylin@gmail.com</a></p>
+      </div>
+      <div class="kontakt-box">
+        <strong>Telefon</strong>
+        <p><a href="tel:+41794663052">079 466 30 52</a></p>
+      </div>
+      <div class="kontakt-box">
+        <strong>Instagram</strong>
+        <p><a href="https://www.instagram.com/m_thomi7/" target="_blank">@m_thomi7</a></p>
+      </div>
+    </div>
+    <div class="kontakt-image">
+      <img src="Image/Website56.jpg" alt="Marylin Thomi Kontaktbild" />
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <img src="" alt="Großansicht" />
+  </div>
+
+  <!-- Booking Popup -->
+  <div id="bookingPopup" class="popup-overlay">
+    <div class="popup-content">
+      <button id="closeBooking" class="close-btn">&times;</button>
+      <h2>Online Buchen</h2>
+      <div class="booking-option">
+        <h3>Outdoor-Shooting</h3>
+        <p>1 Std.</p>
+        <p><strong>180 CHF</strong></p>
+        <button class="booking-btn">Buchung anfragen</button>
+      </div>
+      <div class="booking-option">
+        <h3>Paar-Shooting</h3>
+        <p>1 Std.</p>
+        <p><strong>Ab 180 CHF</strong></p>
+        <button class="booking-btn">Buchung anfragen</button>
+      </div>
+      <div class="booking-option">
+        <h3>Hochzeit</h3>
+        <p>2 Std. inkl. Beratungsgespräch</p>
+        <button class="booking-btn">Buchung anfragen</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = lightbox.querySelector('img');
+    const images = document.querySelectorAll('.grid img');
+
+    images.forEach((img) => {
+      img.addEventListener('click', () => {
+        lightbox.style.display = 'flex';
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+      });
+    });
+
+    lightbox.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+      lightboxImg.src = '';
+    });
+
+    // Booking Popup
+    const openBooking = document.getElementById('openBooking');
+    const bookingPopup = document.getElementById('bookingPopup');
+    const closeBooking = document.getElementById('closeBooking');
+
+    openBooking.addEventListener('click', (e) => {
+      e.preventDefault();
+      bookingPopup.style.display = 'flex';
+    });
+
+    closeBooking.addEventListener('click', () => {
+      bookingPopup.style.display = 'none';
+    });
+
+    bookingPopup.addEventListener('click', (e) => {
+      if (e.target === bookingPopup) {
+        bookingPopup.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
